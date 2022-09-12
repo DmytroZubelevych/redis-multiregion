@@ -1,4 +1,4 @@
-var settings = jps.settings.main;
+var settings = jps.settings.main, markup = "";
 
 var regions = jelastic.env.control.GetRegions(appid, session);
 if (regions.result != 0) return regions;
