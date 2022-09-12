@@ -1,11 +1,10 @@
-var settings = jps.settings.main, markup = "";
+var settings = jps.settings.main, markup = "",
+    MAX_COUNT = "environment.maxcount",
+    SAME_NODES = "environment.maxsamenodescount",
+    MAX_NODES = "environment.maxnodescount";
 
 var regions = jelastic.env.control.GetRegions(appid, session);
 if (regions.result != 0) return regions;
-
-var MAX_COUNT = "environment.maxcount",
-    SAME_NODES = "environment.maxsamenodescount",
-    MAX_NODES = "environment.maxnodescount";
 
 var min = 3, name, value,
     nodesMarkup = "Cannot create the multiregional cluster. Please check this quotas: ", nodesMarkupHidden = true;
