@@ -18,10 +18,7 @@ onBeforeScaleIn[nosqldb]:
           type: warning
           message: At least 3 master nodes must be present in cluster.
     - else:
-      - forEach(nodes.nosqldb):
-        - cmd[${@i.id}]:
-            export REDISCLI_AUTH=$(cat /etc/redis.conf |grep ^masterauth|awk '{print $2}'|tail -n 1); redis-cli -h 127.0.0.1 -p 6379 cluster failover takeover;
-        user: root
+      - forceTakeover
       - forEach(event.response.nodes):
         - cmd[${@i.id}]: |-
             export REDISCLI_AUTH=$(cat /etc/redis.conf |grep ^masterauth|awk '{print $2}'|tail -n 1);
@@ -51,10 +48,7 @@ onBeforeAddNode[nosqldb]:
 onAfterScaleOut[nosqldb]:
   - getRedisPasswd
   - addNewNodeToCluster
-  - forEach(nodes.nosqldb):
-    - cmd[${@i.id}]:
-        export REDISCLI_AUTH=$(cat /etc/redis.conf |grep ^masterauth|awk '{print $2}'|tail -n 1); redis-cli -h 127.0.0.1 -p 6379 cluster failover takeover;
-      user: root
+  - forceTakeover
   - setClusterAnnounceIp: ${event.response.nodes.join(id,)}
   - script: ${baseUrl}/scripts/scaleEnvs.js
   - script: ${baseUrl}/scripts/addReplicas.js
@@ -151,3 +145,9 @@ actions:
         echo -e "cluster-enabled yes\ncluster-config-file nodes.conf\ncluster-node-timeout 5000\nappendonly yes\nmasterauth ${response.out}" >> /etc/redis.conf;
         jem service restart;
       user: root
+      
+  forceTakeover:
+    - forEach(nodes.nosqldb):
+      - cmd[${@i.id}]:
+          export REDISCLI_AUTH=$(cat /etc/redis.conf |grep ^masterauth|awk '{print $2}'|tail -n 1); redis-cli -h 127.0.0.1 -p 6379 cluster failover takeover;
+        user: root
