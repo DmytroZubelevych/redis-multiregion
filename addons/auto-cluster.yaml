@@ -18,6 +18,10 @@ onBeforeScaleIn[nosqldb]:
           type: warning
           message: At least 3 master nodes must be present in cluster.
     - else:
+      - forEach(nodes.nosqldb):
+        - cmd[${@i.id}]:
+            export REDISCLI_AUTH=$(cat /etc/redis.conf |grep ^masterauth|awk '{print $2}'|tail -n 1); redis-cli -h 127.0.0.1 -p 6379 cluster failover takeover;
+        user: root
       - forEach(event.response.nodes):
         - cmd[${@i.id}]: |-
             export REDISCLI_AUTH=$(cat /etc/redis.conf |grep ^masterauth|awk '{print $2}'|tail -n 1);
