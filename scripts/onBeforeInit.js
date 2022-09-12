@@ -33,7 +33,7 @@ for (var i = 0, n = quotas.length; i < n; i++) {
   if (value < min) { nodesMarkup = nodesMarkup + " " + name; nodesMarkupHidden = false; };
 }
 
-resp.settings.fields.push({"type":"displayfield","cls":"warning","height":30,"hideLabel":true,"markup":nodesMarkup,"hidden":nodesMarkupHidden});
+resp.fields.push({"type":"displayfield","cls":"warning","height":30,"hideLabel":true,"markup":nodesMarkup,"hidden":nodesMarkupHidden});
 
 if (regions.array.length < 3) {
   markup = "Package cannot be installed on less than 3 regions. Please contact support or choose a provider with more regions";
