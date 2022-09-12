@@ -1,7 +1,4 @@
 var settings = jps.settings.main;
-var fields = {};
-for (var i = 0, field; field = jps.settings.main.fields[i]; i++)
-  fields[field.name] = field;
 
 var regions = jelastic.env.control.GetRegions(appid, session);
 if (regions.result != 0) return regions;
