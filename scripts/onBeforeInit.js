@@ -7,7 +7,7 @@ var MAX_COUNT = "environment.maxcount",
     SAME_NODES = "environment.maxsamenodescount",
     MAX_NODES = "environment.maxnodescount";
 
-var min = 3, resp, name, value,
+var min = 3, name, value,
     nodesMarkup = "Cannot create the multiregional cluster. Please check this quotas: ", nodesMarkupHidden = true;
 
 var hasCollaboration = (parseInt('${fn.compareEngine(7.0)}', 10) >= 0),
