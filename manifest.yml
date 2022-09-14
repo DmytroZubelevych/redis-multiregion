@@ -12,7 +12,8 @@ baseUrl: https://raw.githubusercontent.com/DmytroZubelevych/redis-multiregion/ma
 
 onBeforeInit: scripts/onBeforeInit.js
 
-globals: 
+globals:
+  cluster_db: redis 
   password: ${fn.password(10)}
 
 settings:
