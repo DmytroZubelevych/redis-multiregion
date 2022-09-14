@@ -4,7 +4,7 @@ actions:
         var db_server_name = '${globals.cluster_db}';
         var regions = '${settings.regions}'.split(','),
             pgpoolRegions = '${settings.pgpool2Regions}'.split(','),
-            db_server_display_name = db_server_name.toUpperCase() + s.slice(1),
+            db_server_display_name = db_server_name[0].toUpperCase() + db_server_name.slice(1),
             envGroups = eval('(' + MANIFEST + ')').envGroups, index,
             onAfterReturn = { setGlobals: {} }, 
             glbs = onAfterReturn.setGlobals,
@@ -23,14 +23,14 @@ actions:
           }
           if ('${settings.topology}' != 'maxrealia') {
             if (index == 1) {
-              glbs["displayName-" + index] = db_server_name + " Cluster Primary";
+              glbs["displayName-" + index] = db_server_display_name + " Cluster Primary";
               glbs["initial_env_master-" + index] = "true";
             } else {
-              glbs["displayName-" + index] = db_server_name + " Cluster Secondary " + i;
+              glbs["displayName-" + index] = db_server_display_name + " Cluster Secondary " + i;
               glbs["initial_env_master-" + index] = "false";
             }
           } else {
-              glbs["displayName-" + index] = db_server_name + " Cluster " + (i + 1);
+              glbs["displayName-" + index] = db_server_display_name + " Cluster " + (i + 1);
           }
         }
         for (var i = 0, n = pgpoolRegions.length; i < n; i ++) {	
