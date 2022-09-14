@@ -2,6 +2,7 @@ actions:
   initGlobals:
     - script: |
         var regions = '${settings.regions}'.split(','),
+            pgpoolRegions = '${settings.pgpool2Regions}'.split(','),
             envGroups = eval('(' + MANIFEST + ')').envGroups, index,
             onAfterReturn = { setGlobals: {} }, 
             glbs = onAfterReturn.setGlobals,
@@ -18,7 +19,7 @@ actions:
                 glbs["domain-" + index] = resp[a].domain;
             }
           }
-          if ('${settings.topology}' == 'maxperf') {
+          if ('${settings.topology}' != 'maxrealia') {
             if (index == 1) {
               glbs["displayName-" + index] = "Redis Cluster Primary";
               glbs["initial_env_master-" + index] = "true";
@@ -29,6 +30,10 @@ actions:
           } else {
               glbs["displayName-" + index] = "Redis Cluster " + (i + 1);
           }
+        }
+        for (var i = 0, n = pgpoolRegions.length; i < n; i ++) {	
+          index = i + 1;	
+          glbs["pgpoolRegion-" + index] = pgpoolRegions[i];	
         }
         glbs["envGroups"] = envGroups;
         glbs["regionsCount"] = regions.length;
@@ -65,5 +70,7 @@ actions:
       envName: ${settings.envName}-1
       settings:
         regions: ${settings.regions}
+        pgpool2Regions: ${globals.pgpool2Regions}
         mainEnvName: ${settings.envName}
         topology: ${settings.topology}
+        masterAddress: ${globals.master_address_sqldb-1}
