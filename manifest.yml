@@ -102,7 +102,9 @@ onInstall:
   - script: ${baseUrl}/scripts/getClusterEnvs.js
     envName: ${settings.envName}-1
   - setGlobals:
-      DBEnvs: ${response.items.join(,)} 
+      DBEnvs: ${response.items.join(,)}
+  - if ('${settings.envGroupEnabled}' == 'true'):
+    - attachNodeGroups
   - script: |-
       var onAfterReturn = { setGlobals: {} }, pgsqlEnvs = [], glbs = onAfterReturn.setGlobals;
       var resp = jelastic.env.control.GetEnvInfo('${settings.envName}-1', session);
