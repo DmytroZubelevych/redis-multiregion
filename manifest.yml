@@ -13,7 +13,8 @@ baseUrl: https://raw.githubusercontent.com/DmytroZubelevych/redis-multiregion/ma
 onBeforeInit: scripts/onBeforeInit.js
 
 globals:
-  cluster_db: redis 
+  multiregional_utils: "https://github.com/jelastic-jps/common/blob/main/multiregional-cluster-utils"
+  cluster_db: redis
   password: ${fn.password(10)}
 
 settings:
@@ -68,7 +69,7 @@ settings:
         tooltip: The order of selected regions matters for <b>Maximum Performance</b> topology only. First selected region will host the primary node of cluster, so this region should have the highest performance. Other regions will host the secondary nodes. 3 nodes will be created for each environment.
 
 mixins:
-  - mixins/common.yml
+  - ${globals.multiregional_utils}/multiregion-db-common.yml
 
 actions:
   attachNodeGroups:
@@ -100,7 +101,7 @@ onInstall:
   - setGlobals:
       domain: ${settings.envName}-1.${globals.domain-1}
   - createEnvs
-  - script: ${baseUrl}/scripts/getClusterEnvs.js
+  - script: ${globals.multiregional_utils}/getClusterEnvs.js
     envName: ${settings.envName}-1
   - setGlobals:
       DBEnvs: ${response.items.join(,)}
