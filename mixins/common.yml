@@ -67,4 +67,3 @@ actions:
         regions: ${settings.regions}
         mainEnvName: ${settings.envName}
         topology: ${settings.topology}
-        masterAddress: ${globals.master_address_sqldb-1}
