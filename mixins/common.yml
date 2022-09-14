@@ -1,9 +1,10 @@
 actions:
   initGlobals:
     - script: |
+        var db_server_name = '${globals.cluster_db}';
         var regions = '${settings.regions}'.split(','),
             pgpoolRegions = '${settings.pgpool2Regions}'.split(','),
-            db_server_name = regions.toUpperCase() + s.slice(1),
+            db_server_display_name = db_server_name.toUpperCase() + s.slice(1),
             envGroups = eval('(' + MANIFEST + ')').envGroups, index,
             onAfterReturn = { setGlobals: {} }, 
             glbs = onAfterReturn.setGlobals,
