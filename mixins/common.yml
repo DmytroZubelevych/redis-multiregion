@@ -3,6 +3,7 @@ actions:
     - script: |
         var regions = '${settings.regions}'.split(','),
             pgpoolRegions = '${settings.pgpool2Regions}'.split(','),
+            db_server_name = regions.toUpperCase() + s.slice(1),
             envGroups = eval('(' + MANIFEST + ')').envGroups, index,
             onAfterReturn = { setGlobals: {} }, 
             glbs = onAfterReturn.setGlobals,
@@ -21,14 +22,14 @@ actions:
           }
           if ('${settings.topology}' != 'maxrealia') {
             if (index == 1) {
-              glbs["displayName-" + index] = "Redis Cluster Primary";
+              glbs["displayName-" + index] = db_server_name + " Cluster Primary";
               glbs["initial_env_master-" + index] = "true";
             } else {
-              glbs["displayName-" + index] = "Redis Cluster Secondary " + i;
+              glbs["displayName-" + index] = db_server_name + " Cluster Secondary " + i;
               glbs["initial_env_master-" + index] = "false";
             }
           } else {
-              glbs["displayName-" + index] = "Redis Cluster " + (i + 1);
+              glbs["displayName-" + index] = db_server_name + " Cluster " + (i + 1);
           }
         }
         for (var i = 0, n = pgpoolRegions.length; i < n; i ++) {	
@@ -46,7 +47,7 @@ actions:
       var envGroups = eval('(' + MANIFEST + ')').envGroups;
       for (var cluster = 1, n = regions.length + 1; cluster < n; cluster ++) {
         actions.push({
-          jps: "${baseUrl}/scripts/manifest_redis.jps?_r=${fn.random}",
+          jps: "${baseUrl}/scripts/manifest_${globals.cluster_db}.jps?_r=${fn.random}",
           envName: "${settings.envName}-" + cluster,
           loggerName: "${settings.envName}-" + cluster,
           envGroups: "Database cluster ${settings.envName}",
