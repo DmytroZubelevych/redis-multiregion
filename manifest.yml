@@ -14,7 +14,7 @@ onBeforeInit: scripts/onBeforeInit.js
 
 globals:
   multiregional_utils: https://github.com/jelastic-jps/common/blob/main/multiregional-cluster-utils
-  cluster_db: redis
+  cluster_app: redis
   password: ${fn.password(10)}
 
 settings:
