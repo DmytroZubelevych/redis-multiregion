@@ -4,8 +4,7 @@ actions:
         var cluster_app = '${globals.cluster_app}';
         var regions = '${settings.regions}'.split(','),
             pgpoolRegions = '${settings.pgpool2Regions}'.split(','),
-            cluster_app_display_name = db_server_name[0].toUpperCase() + db_server_name.slice(1),
-            envGroups = eval('(' + MANIFEST + ')').envGroups, index,
+            cluster_app_display_name = db_server_name[0].toUpperCase() + db_server_name.slice(1), index,
             onAfterReturn = { setGlobals: {} }, 
             glbs = onAfterReturn.setGlobals,
             resp, domain;
@@ -37,7 +36,6 @@ actions:
           index = i + 1;	
           glbs["pgpoolRegion-" + index] = pgpoolRegions[i];	
         }
-        glbs["envGroups"] = envGroups;
         glbs["regionsCount"] = regions.length;
         glbs["master_env_name"] = "${settings.envName}-1";
         return { result: 0, onAfterReturn: onAfterReturn };
@@ -45,13 +43,12 @@ actions:
   createEnvs:
   - script: |
       var regions = '${settings.regions}'.split(','), actions = [];
-      var envGroups = eval('(' + MANIFEST + ')').envGroups;
       for (var cluster = 1, n = regions.length + 1; cluster < n; cluster ++) {
         actions.push({
           jps: "${baseUrl}/scripts/manifest_${globals.cluster_db}.jps?_r=${fn.random}",
           envName: "${settings.envName}-" + cluster,
           loggerName: "${settings.envName}-" + cluster,
-          envGroups: "Database cluster ${settings.envName}",
+          envGroups: "${globals.envGroups}",
           displayName: "${globals.displayName-" + cluster + "}",
           region: "${globals.region-" + cluster + "}",
           settings: {
