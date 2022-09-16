@@ -73,7 +73,7 @@ mixins:
   - https://github.com/jelastic-jps/common/blob/main/multiregional-cluster-utils/multiregion-db-common.yml
 
 actions:
-  createNodeGroups:
+  createEnvGroups:
     - script: |
         import com.hivext.api.Response;
         let resp = jelastic.env.group.CreateGroup({
@@ -88,9 +88,9 @@ onInstall:
   - setGlobals:
       domain: ${settings.envName}-1.${globals.domain-1}
   - if ('${settings.envGroupEnabled}' == 'true'):
-    - createNodeGroups
+    - createEnvGroups
     - setGlobals:
-        nodeGroup: "Database cluster ${settings.envName}"
+        envGroups: "Database cluster ${settings.envName}"
   - createEnvs
   - script: ${globals.multiregional_utils}/getClusterEnvs.js
     envName: ${settings.envName}-1
