@@ -73,7 +73,7 @@ mixins:
   - https://github.com/jelastic-jps/common/blob/main/multiregional-cluster-utils/multiregion-db-common.yml
 
 actions:
-  attachNodeGroups:
+  createNodeGroups:
     - script: |
         import com.hivext.api.Response;
         let resp = jelastic.env.group.CreateGroup({
@@ -82,30 +82,20 @@ actions:
           });
         if (resp.result != 0 && resp.result != Response.ENVIRONMENT_GROUP_ALREADY_EXISTS) return resp;
         return { result: 0 };
-        var targetEnvGroups = "";
-        targetEnvGroups.push("Database cluster ${settings.envName}");
-        var DBEnvs = '${globals.DBEnvs}'.split(',');
-        for (var i = 0, n = DBEnvs.length; i < n; i ++) {
-            resp = jelastic.env.control.AttachEnvGroup({
-              envName  : DBEnvs[i],
-              session  : session,
-              envGroups: targetEnvGroups
-            });
-            if (resp.result != 0) { return resp; }
-        }
-        return { result: 0 }
 
 onInstall:
   - initGlobals
   - setGlobals:
       domain: ${settings.envName}-1.${globals.domain-1}
+  - if ('${settings.envGroupEnabled}' == 'true'):
+    - createNodeGroups
+    - setGlobals:
+        nodeGroup: "Database cluster ${settings.envName}"
   - createEnvs
   - script: ${globals.multiregional_utils}/getClusterEnvs.js
     envName: ${settings.envName}-1
   - setGlobals:
       DBEnvs: ${response.items.join(,)}
-  - if ('${settings.envGroupEnabled}' == 'true'):
-    - attachNodeGroups
   - script: |-
       var onAfterReturn = { setGlobals: {} }, pgsqlEnvs = [], glbs = onAfterReturn.setGlobals;
       var resp = jelastic.env.control.GetEnvInfo('${settings.envName}-1', session);
