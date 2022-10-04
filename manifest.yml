@@ -92,7 +92,7 @@ onInstall:
     - setGlobals:
         envGroups: "Database cluster ${settings.envName}"
   - createEnvs
-  - script: ${globals.multiregional_utils}/getClusterEnvs.js
+  - script: ${globals.multiregional_utils}/get-cluster-envs.js
     envName: ${settings.envName}-1
   - setGlobals:
       DBEnvs: ${response.items.join(,)}
