@@ -69,7 +69,7 @@ settings:
         tooltip: The order of selected regions matters for <b>Maximum Performance</b> topology only. First selected region will host the primary node of cluster, so this region should have the highest performance. Other regions will host the secondary nodes. 3 nodes will be created for each environment.
 
 mixins:
-  - https://github.com/jelastic-jps/common/blob/main/multiregional-cluster-utils/multiregion_globals_common.yml
+  - https://github.com/jelastic-jps/common/blob/main/multiregional-cluster-utils/multiregion-globals-common.yml
   - https://github.com/jelastic-jps/common/blob/main/multiregional-cluster-utils/multiregion-db-common.yml
 
 actions:
