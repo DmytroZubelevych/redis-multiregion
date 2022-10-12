@@ -97,9 +97,9 @@ onInstall:
   - setGlobals:
       DBEnvs: ${response.items.join(,)}
   - script: |-
-      var onAfterReturn = { setGlobals: {} }, pgsqlEnvs = [], glbs = onAfterReturn.setGlobals;
+      var onAfterReturn = { setGlobals: {} }, glbs = onAfterReturn.setGlobals;
       var resp = jelastic.env.control.GetEnvInfo('${settings.envName}-1', session);
-      if (resp.result != 0) { return resp; } else { pgsqlEnvs.push(resp.env.shortdomain); }
+      if (resp.result != 0) { return resp; }
       for (var i = 0, k = resp.nodes; i < k.length; i++) {
           if (k[i].nodeGroup == 'nosqldb') {
               if( k[i].ismaster ) {
