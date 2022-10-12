@@ -99,7 +99,7 @@ onInstall:
   - script: |
       let resp = jelastic.env.control.GetEnvInfo('${settings.envName}-1', session)
       if (resp.result != 0) return resp
-      let node = resp.nodes.find(node => node[i].nodeGroup == 'nosqldb' && node[i].ismaster)
+      let node = resp.nodes.find(node => node.nodeGroup == 'nosqldb' && node.ismaster)
       return { result: 0, node: node }
   - setGlobals:
       master_id_nosqldb-1: ${response.node.id}
