@@ -99,7 +99,6 @@ onInstall:
   - script: |-
       var onAfterReturn = { setGlobals: {} }, pgsqlEnvs = [], glbs = onAfterReturn.setGlobals;
       var resp = jelastic.env.control.GetEnvInfo('${settings.envName}-1', session);
-      var ipCmd = "ip a | grep -A1 venet0 | grep inet | awk '{print $2}'| sed 's|\/[0-9]*||g' | head -n 2|tail -n 1";
       if (resp.result != 0) { return resp; } else { pgsqlEnvs.push(resp.env.shortdomain); }
       for (var i = 0, k = resp.nodes; i < k.length; i++) {
           if (k[i].nodeGroup == 'nosqldb') {
