@@ -96,11 +96,14 @@ onInstall:
     envName: ${settings.envName}-1
   - setGlobals:
       DBEnvs: ${response.items.join(,)}
-  - script: |-
+  - script: |
       let resp = jelastic.env.control.GetEnvInfo('${settings.envName}-1', session)
       if (resp.result != 0) return resp
       let node = resp.nodes.find(node => node[i].nodeGroup == 'nosqldb' && node[i].ismaster)
-      return { result: 0, onAfterReturn: { setGlobals : { "master_id_nosqldb-1" : node.id, "master_address_nosqldb-1" : node.address } } }
+      return { result: 0, node: node }
+  - setGlobals:
+      master_id_nosqldb-1: ${response.node.id}
+      master_address_nosqldb-1: ${response.node.address}
   - installClusterLogic
 
 startPage: ${nodes.nosqldb.master.url}
