@@ -40,6 +40,9 @@ settings:
         caption: "Create separate environment group"
         name: envGroupEnabled
         value: true
+      - name: externalIpAddresses
+        type: checkbox
+        caption: Enable External IP Addresses for cluster nodes
       - type: radiolist
         caption: Topology
         name: topology
