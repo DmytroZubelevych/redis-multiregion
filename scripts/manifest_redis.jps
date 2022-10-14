@@ -15,6 +15,7 @@ nodes:
   nodeType: ${settings.nodeType}
   nodeGroup: nosqldb
   cluster: false
+  extIp: ${settings.externalIpAddresses:false}
   skipNodeEmails: true
 
 onBeforeMigrate:
