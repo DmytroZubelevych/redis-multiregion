@@ -15,7 +15,6 @@ nodes:
   nodeType: ${settings.nodeType}
   nodeGroup: nosqldb
   cluster: false
-  extIp: ${settings.externalIpAddresses:false}
   skipNodeEmails: true
 
 onBeforeMigrate:
@@ -61,6 +60,11 @@ onAfterServiceScaleOut[nosqldb]:
     user: root
 
 onInstall:
+  - if ('${settings.externalIpAddresses}' == 'true' ):
+    - forEach(nodes.nosqldb):
+      - env.control.AttachExtIp:
+          envName: ${env.envName}
+          nodeid: ${@i.id}
   - if ('${settings.internalNetworkEnabled}' == 'true' ):
     - if (!/vpnAppid/.test("${globals.vpnAppid}")):
       - install: ${baseUrl}/scripts/networkAddon.yml
