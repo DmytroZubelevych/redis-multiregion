@@ -28,7 +28,14 @@ Redis Multi-Region cluster for Cross-Region deployments consists of groups of no
 
 ### High Availability and Failover
 
-Main purpose of Cross-Region DB clusters is high availability and failover capabilities at the data centre level: database is accessible even if one of Regions becomes unavailable. Thus, if one or more Regions fail cluster will be available depending on selected topology. In case one of cluster nodes fails both topologies ensure no downtime cluster work. 
+Main purpose of Cross-Region DB clusters is high availability and failover capabilities. Thus, depending on the selected topology the cluster will keep working for:
+
+ - **Maximum performance** topology when one or two nodes fail 
+
+ - **Maximum Reliability** topology when one, or two nodes fail or even one or two Regions become unavailable
+
+
+if one or two nodes fail in any Region or even whole Region fails the cluster will be available depending on selected topology. In case one of cluster nodes fails both topologies ensure no downtime cluster work. 
 For the **Maximum Performance** topology upon cluster installation, customer is able to select "Primary" Region that should host Primary servers and "Secondary" Regions that should host Secondary database servers also known as **Replicas**.
 
 
@@ -40,7 +47,8 @@ Go to [VAP Marketplace](https://www.virtuozzo.com/application-platform-docs/mark
 <img src="images/mp-install.png" width="600">
 </p>
 
-In the opened installation window specify the **Environment** name. This name will be used for Multi-Region environments isolation. Just pick the **Create separate environment group** option. For example, if you use **redismulti** name for the **Environment** field, all the cluster parts will be put into the **Database cluster redismulti** [environment group](https://www.virtuozzo.com/application-platform-docs/environment-groups/).
+Since PaaS allows to place one environment per one region only, the Multi-Region installation stipulates creating Multi-Environment topology. In order to distinguish one Multi-Region installation from another we create [Environment Group](https://www.virtuozzo.com/application-platform-docs/environment-groups/) with name that user provides during installation and put all the newly created environments into this group. 
+So, in the opened installation window specify the **Environment** name which can be used for Multi-Region environments isolation if you pick the **Create separate environment group** option. For example, if you use **redismulti** name for the **Environment** field, all the cluster parts will be put into the **Database cluster redismulti** environment group.
 
 <p align="left">
 <img src="images/env-group.png" width="500">
